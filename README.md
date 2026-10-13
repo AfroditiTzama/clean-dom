@@ -1,106 +1,207 @@
-# Clean DOM
+# clean-dom
 
-[![CI](https://github.com/AfroditiTzama/clean-dom/actions/workflows/ci.yml/badge.svg)](https://github.com/AfroditiTzama/clean-dom/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
+`clean-dom` is a lightweight DOM compression and cleaning layer for LLM and
+AI-agent pipelines. It removes configurable HTML noise while retaining useful
+HTML structure and semantic attributes for browser agents, web scrapers, and
+automation workflows.
 
-A lightweight Python library designed to prune and clean HTML DOM trees. It is specifically optimized to **reduce token usage and eliminate boilerplate** in Large Language Model (LLM) context windows, web scraping pipelines, and AI agents.
+Unlike traditional HTML-to-Markdown conversion, which flattens much of the DOM
+structure, `clean-dom` prunes the existing HTML representation. This can make
+page context more compact while preserving the markup your downstream workflow
+needs.
 
----
+The amount of output reduction depends on each page and its content.
 
-##  Why Clean DOM?
+## Installation
 
-When feeding HTML snapshots from web scrapers or browser automation tools (like Playwright, Selenium) into LLMs, you often encounter massive amounts of useless bloat:
-* **Tracking & Analytics:** Third-party scripts (`<script>`) and tracking pixels.
-* **Styling Fluff:** Heavy embedded or inline CSS (`<style>`, `style="..."`).
-* **Non-Semantic Assets:** SVGs, iframes, navbars, footers, and canvas elements.
-* **Redundant Attributes:** Event handlers (`onclick`) and custom data trackers that inflate token counts without adding semantic meaning.
+```bash
+pip install clean-dom
 
-`clean-dom` strips this clutter efficiently, **slashing token consumption and API costs** while preserving the core structural content that LLMs actually need to reason about a webpage.
+Basic Usage
+from clean_dom import DOMCleanerraw_html = """<html>  <head>    <style>body { background: red; }</style>    <script src="analytics.js"></script>  </head>  <body>    <div        id="main-container"        class="content"        data-tracker="xyz123"    >      <h1 class="title">Hello LLM!</h1>      <a href="https://example.com" onclick="trackClick()">        Read More      </a>    </div>  </body></html>"""cleaner = DOMCleaner()cleaned_html = cleaner.clean(raw_html)print(cleaned_html)
 
----
 
-##  Installation
+By default, the cleaner removes common non-content elements such as scripts,
+styles, navigation, footers, embedded frames, SVGs, and canvas elements.
+It also:
+- removes HTML comments
+- filters attributes using a semantic allowlist
+- removes data: URLs from src and href
+- removes excessively large attribute values
+Removal Rules
+You can add extra elements to the default removal rules:
+from clean_dom import DOMCleanercleaner = DOMCleaner(    additional_remove_tags={"aside", "footer"})cleaned_html = cleaner.clean(raw_html)
 
-Install the package directly from source or via pip:
 
-``bash
-pip install .
+There are three related options:
+remove_tags
+Replaces the default removal set completely.
+cleaner = DOMCleaner(    remove_tags={"script", "aside"})
 
-For development (including testing frameworks and linters):
 
-Bash
+Only the tags you specify will be removed.
+additional_remove_tags
+Adds tags to the default removal set.
+cleaner = DOMCleaner(    additional_remove_tags={"aside"})
+
+
+This keeps all default cleaning rules and also removes aside.
+unwrap_tags
+Removes the wrapper element while preserving its text and child elements.
+cleaner = DOMCleaner(    unwrap_tags={"span"})
+
+
+For example:
+<p>Hello <span>world</span></p>
+
+becomes approximately:
+<p>Hello world</p>
+
+The text world is preserved.
+Attributes
+By default, clean-dom preserves useful semantic and interaction attributes,
+including:
+- id
+- class
+- href
+- src
+- alt
+- title
+- name
+- type
+- value
+- placeholder
+- role
+- aria-label
+- aria-labelledby
+- for
+- action
+- method
+- checked
+- selected
+- disabled
+- required
+You can provide your own whitelist:
+cleaner = DOMCleaner(    allowed_attributes={"id", "href", "aria-label"})
+
+
+AI Agent Preset
+For browser agents and automation workflows:
+cleaner = DOMCleaner.preset("agent")cleaned_html = cleaner.clean(raw_html)
+
+
+The agent preset keeps useful form and accessibility information such as:
+- role
+- aria-label
+- name
+- type
+- placeholder
+This helps downstream AI systems understand interactive page elements such as
+buttons, links, and form fields.
+Presets
+clean-dom includes three built-in presets.
+minimal
+cleaner = DOMCleaner.preset("minimal")
+
+
+Keeps only the id and href attributes while using the default tag-removal
+rules.
+content
+cleaner = DOMCleaner.preset("content")
+
+
+Uses the default removal rules, additionally removes aside, and unwraps
+span elements.
+agent
+cleaner = DOMCleaner.preset("agent")
+
+
+Preserves additional semantic, accessibility, and form attributes useful for
+AI agents and browser automation.
+Additional Configuration
+HTML comments are removed by default.
+To preserve them:
+cleaner = DOMCleaner(    remove_comments=False)
+
+
+data: URLs are removed from src and href by default.
+To preserve them:
+cleaner = DOMCleaner(    drop_data_urls=False)
+
+
+Attribute values longer than 500 characters are removed by default.
+You can change the limit:
+cleaner = DOMCleaner(    max_attribute_length=1000)
+
+
+Or disable the limit:
+cleaner = DOMCleaner(    max_attribute_length=None)
+
+
+Backwards Compatibility
+The old strip_tags argument from clean-dom 0.1.x is temporarily supported
+for backwards compatibility.
+cleaner = DOMCleaner(    strip_tags={"script", "style"})
+
+
+However, strip_tags is deprecated.
+New code should use:
+cleaner = DOMCleaner(    remove_tags={"script", "style"})
+
+
+Why clean-dom?
+Large HTML snapshots often contain significant amounts of information that is
+not useful to an LLM or browser agent, including:
+- JavaScript
+- CSS
+- tracking attributes
+- SVG markup
+- iframes
+- navigation boilerplate
+- large embedded data URLs
+- unnecessary HTML attributes
+Sending all of this to an LLM can increase context size and introduce noise.
+clean-dom provides a deterministic preprocessing step:
+Raw HTML
+   ↓
+clean-dom
+   ↓
+Smaller, cleaner DOM
+   ↓
+LLM / AI agent
+
+It preserves HTML structure rather than converting the page into Markdown,
+making it useful when downstream systems need to reason about DOM elements,
+links, forms, IDs, or accessibility information.
+Safety
+clean-dom is a DOM pruning and context-optimization library.
+It is not an HTML security sanitizer.
+Do not use it as a replacement for dedicated security sanitization tools when
+rendering untrusted HTML in a browser or application.
+Development
+Clone the repository and install development dependencies:
+git clone https://github.com/AfroditiTzama/clean-dom.git
+cd clean-dom
 pip install -e ".[dev]"
 
-## Quick Start
-Out of the box, clean-dom requires zero configuration. It automatically targets and removes common noisy elements while keeping essential semantic attributes (id, class, href, src, etc.).
+Run the test suite:
+python -m pytest -v
 
-Python
-from clean_dom import DOMCleaner
+Run Ruff:
+python -m ruff check src tests examples
 
-raw_html = """
-<html>
-  <head>
-    <style>body { background: red; }</style>
-    <script src="analytics.js"></script>
-  </head>
-  <body>
-    <div id="main-container" class="content" data-tracker="xyz123">
-      <h1 class="title">Hello LLM!</h1>
-      <a href="[https://example.com](https://example.com)" onclick="trackClick()">Read More</a>
-    </div>
-  </body>
-</html>
-"""
+Run Pyright:
+pyright
 
-## Initialize cleaner with default rules
-cleaner = DOMCleaner()
-cleaned_html = cleaner.clean(raw_html)
+Build the package:
+python -m build
 
-print(cleaned_html)
-Output:
+Validate the distributions:
+python -m twine check dist/*
 
-HTML
-<html>
-<head>
-</head>
-<body>
-<div class="content" id="main-container">
-<h1 class="title">Hello LLM!</h1>
-<a href="[https://example.com](https://example.com)">Read More</a>
-</div>
-</body>
-</html>
-
-## Advanced Customization
-If your AI agent or application requires custom pruning rules, you can easily pass your own configuration sets:
-
-Python
-from clean_dom import DOMCleaner
-
-## Keep only specific tags/attributes or strip custom ones
-cleaner = DOMCleaner(
-    strip_tags={"span", "aside", "footer"},      # Additional tags to completely remove
-    allowed_attributes={"id", "class", "href"}    # Strict whitelist of attributes to preserve
-)
-
-cleaned_html = cleaner.clean(raw_html)
-
-## Performance & Benchmarks
-Running the included benchmark script (python3 examples/benchmark.py) on typical bloated web snapshots demonstrates:
-
-Token Reduction: Typically slashes HTML size by 45% to 70%, directly translating to lower API latency and cost savings with LLMs.
-
-Execution Speed: Processes large HTML trees in sub-milliseconds (< 1ms), making it ideal for high-throughput asynchronous web scrapers.
-
-## Running Tests
-We maintain a rigorous test suite covering edge cases, malformed HTML, and custom configurations. To run tests and generate a code coverage report:
-
-### Bash
-python3 -m pytest --cov=clean_dom --cov-report=term-missing
-
-### Contributing
-Contributions, bug reports, and feature requests are warmly welcomed! Please read our CONTRIBUTING.md guide to get started.
-
-### License
-Distributed under the MIT License. See LICENSE for more information.
+Contributing
+Contributions, bug reports, and feature requests are welcome.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidance.
+License
+Distributed under the MIT License.
+See LICENSE for more information.

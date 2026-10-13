@@ -1,5 +1,7 @@
 import time
+
 from clean_dom import DOMCleaner
+
 
 def run_benchmark():
     # Ένα τυπικό, "φουσκωμένο" HTML από scraping πραγματικής ιστοσελίδας

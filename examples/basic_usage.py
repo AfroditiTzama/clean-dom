@@ -1,5 +1,6 @@
 from clean_dom import DOMCleaner
 
+
 def main():
     raw_html = """
     <html>
