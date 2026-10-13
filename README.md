@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 
-A lightweight, high-performance Python library designed to prune and clean HTML DOM trees. It is specifically optimized to **reduce token usage and eliminate boilerplate** in Large Language Model (LLM) context windows, web scraping pipelines, and AI agents.
+A lightweight Python library designed to prune and clean HTML DOM trees. It is specifically optimized to **reduce token usage and eliminate boilerplate** in Large Language Model (LLM) context windows, web scraping pipelines, and AI agents.
 
 ---
 
