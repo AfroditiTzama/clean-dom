@@ -1,4 +1,4 @@
-# Clean DOM (`clean-dom`)
+# Clean DOM
 
 [![CI](https://github.com/AfroditiTzama/clean-dom/actions/workflows/ci.yml/badge.svg)](https://github.com/AfroditiTzama/clean-dom/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
