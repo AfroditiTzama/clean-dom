@@ -72,7 +72,7 @@ HTML
 </body>
 </html>
 
-Advanced Customization
+###Advanced Customization
 If your AI agent or application requires custom pruning rules, you can easily pass your own configuration sets:
 
 Python
@@ -86,21 +86,21 @@ cleaner = DOMCleaner(
 
 cleaned_html = cleaner.clean(raw_html)
 
-Performance & Benchmarks
+###Performance & Benchmarks
 Running the included benchmark script (python3 examples/benchmark.py) on typical bloated web snapshots demonstrates:
 
 Token Reduction: Typically slashes HTML size by 45% to 70%, directly translating to lower API latency and cost savings with LLMs.
 
 Execution Speed: Processes large HTML trees in sub-milliseconds (< 1ms), making it ideal for high-throughput asynchronous web scrapers.
 
-Running Tests
+###Running Tests
 We maintain a rigorous test suite covering edge cases, malformed HTML, and custom configurations. To run tests and generate a code coverage report:
 
 Bash
 python3 -m pytest --cov=clean_dom --cov-report=term-missing
 
-Contributing
+###Contributing
 Contributions, bug reports, and feature requests are warmly welcomed! Please read our CONTRIBUTING.md guide to get started.
 
-License
+###License
 Distributed under the MIT License. See LICENSE for more information.
