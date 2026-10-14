@@ -1,0 +1,141 @@
+[
+  {
+    "filename": "docs.html",
+    "category": "documentation",
+    "source_type": "synthetic-realistic",
+    "purpose": "Technical guide with prose, code, anchors, and a compact table of contents.",
+    "patterns": ["headings", "paragraphs", "code blocks", "internal navigation", "semantic links", "modest script and style"],
+    "contains_exact_duplicates": false,
+    "contains_interactive_elements": true,
+    "contains_repeated_distinct_items": true,
+    "must_preserve_text": ["Reliable data imports", "Validate records", "Retry safely", "idempotency key"],
+    "must_preserve_hrefs": ["/api/streams", "/guides/transactions"],
+    "must_preserve_attributes": [],
+    "optional_preserve_text": ["Guides", "API", "Support", "Privacy", "Terms"],
+    "optional_preserve_hrefs": ["/guides", "/api", "/support", "/privacy", "/terms"],
+    "variant_expectations": {
+      "agent": {
+        "must_preserve_hrefs": ["/guides", "/guides/imports", "/api", "/support", "/privacy", "/terms"],
+        "notes": "Agent mode is expected to retain primary, breadcrumb, and footer links."
+      }
+    },
+    "notes": "Body content and inline references are required in every mode; navigation and footer links are agent-specific requirements."
+  },
+  {
+    "filename": "article.html",
+    "category": "article",
+    "source_type": "synthetic-realistic",
+    "purpose": "Long-form community report with metadata, infobox, sections, and references.",
+    "patterns": ["article text", "section headings", "infobox-like metadata", "references", "navigation", "footer"],
+    "contains_exact_duplicates": false,
+    "contains_interactive_elements": true,
+    "contains_repeated_distinct_items": true,
+    "must_preserve_text": ["How community gardens share water", "A practical schedule", "Tools that helped", "What remains uncertain"],
+    "must_preserve_hrefs": ["/journal/methods", "/resources/water"],
+    "must_preserve_attributes": [],
+    "optional_preserve_text": ["Journal", "Cities", "Fieldwork", "Archive", "About", "Contact"],
+    "optional_preserve_hrefs": ["/journal", "/journal/cities", "/journal/fieldwork", "/journal/archive", "/about", "/contact"],
+    "variant_expectations": {
+      "agent": {
+        "must_preserve_hrefs": ["/journal", "/journal/cities", "/journal/fieldwork", "/journal/archive", "/about", "/contact"],
+        "notes": "Agent mode preserves publication navigation, breadcrumb, and footer links."
+      }
+    },
+    "notes": "The article's body and references are required; publication shell links are required only for agent mode."
+  },
+  {
+    "filename": "ecommerce.html",
+    "category": "ecommerce",
+    "source_type": "synthetic-realistic",
+    "purpose": "Product listing with distinct goods, destinations, prices, and purchase controls.",
+    "patterns": ["distinct product cards", "distinct hrefs", "prices", "forms and buttons", "image alt/src", "long class lists", "data tracking attributes"],
+    "contains_exact_duplicates": false,
+    "contains_interactive_elements": true,
+    "contains_repeated_distinct_items": true,
+    "must_preserve_text": ["Compact hand plane", "Steel bench square", "Workshop marking set", "Padded clamp pair", "Add compact plane", "Add steel square", "Add marking set"],
+    "must_preserve_hrefs": ["/products/hand-plane-101", "/products/bench-square-202", "/products/marking-set-303", "/products/clamp-pair-404"],
+    "must_preserve_attributes": [
+      {"tag": "form", "attribute": "action", "value": "/search"},
+      {"tag": "form", "attribute": "role", "value": "search"},
+      {"tag": "input", "attribute": "name", "value": "q"},
+      {"tag": "input", "attribute": "type", "value": "search"}
+    ],
+    "optional_preserve_text": ["Tools", "Materials", "Safety", "Next"],
+    "optional_preserve_hrefs": ["/tools", "/materials", "/safety", "?page=1", "?page=2"],
+    "variant_expectations": {
+      "agent": {
+        "must_preserve_hrefs": ["/tools", "/materials", "/safety", "?page=1", "?page=2"],
+        "notes": "Agent mode is expected to preserve category navigation, breadcrumb, and pagination links."
+      }
+    },
+    "notes": "Distinct product names, product URLs, and search form semantics are required in every mode."
+  },
+  {
+    "filename": "react_app.html",
+    "category": "application_shell",
+    "source_type": "synthetic-realistic",
+    "purpose": "Nested client-rendered workspace shell with accessible controls and empty wrappers.",
+    "patterns": ["deep div nesting", "generated-looking classes", "empty wrappers", "role and aria labels", "buttons", "form input", "modest script and style"],
+    "contains_exact_duplicates": false,
+    "contains_interactive_elements": true,
+    "contains_repeated_distinct_items": true,
+    "must_preserve_text": ["Project overview", "Open tasks", "Recent files", "Review the quarterly plan", "Update the setup guide"],
+    "must_preserve_hrefs": ["/workspace/tasks?status=open", "/workspace/files", "/tasks/plan-review", "/tasks/update-guide"],
+    "must_preserve_attributes": [
+      {"tag": "div", "attribute": "role", "value": "navigation"},
+      {"tag": "div", "attribute": "aria-label", "value": "Workspace navigation"},
+      {"tag": "input", "attribute": "aria-label", "value": "Search workspace"},
+      {"tag": "button", "attribute": "aria-label", "value": "Create a task"}
+    ],
+    "optional_preserve_text": ["Members", "Files", "Invite"],
+    "optional_preserve_hrefs": ["/workspace/members"],
+    "notes": "Workspace controls and accessibility attributes are expected to survive both default and agent cleaning."
+  },
+  {
+    "filename": "news.html",
+    "category": "news_article",
+    "source_type": "synthetic-realistic",
+    "purpose": "News story with article body, promotions, related links, and publication navigation.",
+    "patterns": ["article body", "header and navigation", "promotional section", "related stories", "tracking attributes", "footer"],
+    "contains_exact_duplicates": false,
+    "contains_interactive_elements": true,
+    "contains_repeated_distinct_items": true,
+    "must_preserve_text": ["City teams prepare for warmer summers", "Local observations guide the work", "What happens next"],
+    "must_preserve_hrefs": ["/local/library-hours", "/climate/tree-survey"],
+    "must_preserve_attributes": [
+      {"tag": "button", "attribute": "aria-label", "value": "Open menu"}
+    ],
+    "optional_preserve_text": ["Local", "Climate", "Culture", "Science", "About", "Contact", "Privacy"],
+    "optional_preserve_hrefs": ["/local", "/climate", "/culture", "/science", "/about", "/contact", "/privacy"],
+    "variant_expectations": {
+      "agent": {
+        "must_preserve_hrefs": ["/local", "/climate", "/culture", "/science", "/about", "/contact", "/privacy"],
+        "notes": "Agent mode is expected to retain section navigation and footer links."
+      }
+    },
+    "notes": "Article and related-story semantics are required in every mode; publication shell links are agent-specific."
+  },
+  {
+    "filename": "navigation_heavy.html",
+    "category": "navigation_heavy",
+    "source_type": "synthetic-realistic",
+    "purpose": "Responsive service directory with exact menu copies and distinct service destinations.",
+    "patterns": ["desktop and mobile navigation", "exact sibling menu copies", "similar but distinct links", "different office destinations", "footer links"],
+    "contains_exact_duplicates": true,
+    "contains_interactive_elements": true,
+    "contains_repeated_distinct_items": true,
+    "must_preserve_text": ["Find a local service", "Office locations", "North office", "South office", "Directions and hours"],
+    "must_preserve_hrefs": ["/offices/north", "/offices/south"],
+    "must_preserve_attributes": [],
+    "optional_preserve_text": ["Housing support", "Transport assistance", "Community care", "Permits and records", "Urgent help"],
+    "optional_preserve_hrefs": ["/housing", "/transport", "/care", "/permits", "/housing/apply", "/transport/passes", "/care/visit", "/emergency", "/accessibility", "/feedback"],
+    "variant_expectations": {
+      "agent": {
+        "must_preserve_text": ["Housing support", "Transport assistance", "Community care", "Permits and records", "Urgent help"],
+        "must_preserve_hrefs": ["/housing", "/transport", "/care", "/permits", "/housing/apply", "/transport/passes", "/care/visit", "/emergency", "/accessibility", "/feedback"],
+        "notes": "Agent mode is expected to retain desktop, mobile, duplicated menu, and footer navigation."
+      }
+    },
+    "notes": "Default cleaning removes nav/footer containers; agent mode requirements include their links. Deduplication mode follows default container removal."
+  }
+]

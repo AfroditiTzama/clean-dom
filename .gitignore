@@ -1,1 +1,14 @@
-dist/
+/dist/
+/build/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.pyright/
+.coverage
+/htmlcov/
+/.venv/
+/uv.lock
+/benchmark-results/
+/benchmarks/results/
+/benchmarks/results*.json

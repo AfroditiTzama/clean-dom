@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Field Notes: Reliable Data Imports</title>
+  <style>body { color: #29313a; } .quiet { margin-block: 1rem; }</style>
+  <script>window.pageReady = true;</script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">Field Notes</a>
+    <nav aria-label="Primary"><a href="/guides">Guides</a><a href="/api">API</a><a href="/support">Support</a></nav>
+  </header>
+  <div class="layout">
+    <aside class="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <ul><li><a href="#prepare">Prepare a source</a></li><li><a href="#validate">Validate records</a></li><li><a href="#retry">Retry safely</a></li></ul>
+    </aside>
+    <main id="content" class="documentation-page">
+      <nav aria-label="Breadcrumb"><a href="/guides">Guides</a> / <a href="/guides/imports">Imports</a></nav>
+      <article>
+        <h1>Reliable data imports</h1>
+        <p>Small import jobs are easier to inspect when every step has an explicit boundary. This guide describes a repeatable path from source selection to a verified result.</p>
+        <section id="prepare"><h2>Prepare a source</h2>
+          <p>Read the input as a stream when its size is unknown. Preserve the source identifier and record a checksum before transforming any fields.</p>
+          <pre><code>with source.open("rb") as stream:
+    digest = checksum(stream)
+    rows = parse_records(stream)</code></pre>
+          <p>See <a href="/api/streams">stream handling</a> for the supported interfaces.</p>
+        </section>
+        <section id="validate"><h2>Validate records</h2>
+          <p>Validate required fields before writing. Keep row-level errors with their input positions so an operator can correct the source without guessing.</p>
+          <pre><code>for position, row in enumerate(rows, start=1):
+    validate(row, source_row=position)</code></pre>
+          <p><code>strict=True</code> stops on the first invalid record; the default collects a bounded set of errors.</p>
+        </section>
+        <section id="retry"><h2>Retry safely</h2>
+          <p>Retries are useful for temporary storage failures, but repeating a write can duplicate records. Use an idempotency key and keep the commit step separate from parsing.</p>
+          <a href="/guides/transactions" aria-label="Read transaction guidance">Transaction guidance</a>
+        </section>
+      </article>
+    </main>
+  </div>
+  <footer><a href="/privacy">Privacy</a><a href="/terms">Terms</a><span>Documentation revised for the current release.</span></footer>
+</body>
+</html>

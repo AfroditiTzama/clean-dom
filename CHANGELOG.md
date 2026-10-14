@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1
+
+### Added
+- Optional token metrics and structured cleaning reports.
+- Progressive token-budget cleaning and stable agent element mapping.
+- Opt-in conservative repeated-sibling deduplication.
+- Synthetic-realistic benchmark fixtures, runner, and semantic-retention checks.
+
+### Changed
+- The `agent` preset preserves navigation and footer containers for actionable links.
+
 ## 0.2.0
 
 ### Added

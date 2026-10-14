@@ -114,9 +114,7 @@ def test_additional_remove_tags_keep_defaults():
     </html>
     """
 
-    cleaner = DOMCleaner(
-        additional_remove_tags={"aside"}
-    )
+    cleaner = DOMCleaner(additional_remove_tags={"aside"})
 
     result = cleaner.clean(html)
 
@@ -134,9 +132,7 @@ def test_unwrap_tag_preserves_content():
     <p>Hello <span>beautiful <strong>world</strong></span></p>
     """
 
-    cleaner = DOMCleaner(
-        unwrap_tags={"span"}
-    )
+    cleaner = DOMCleaner(unwrap_tags={"span"})
 
     result = cleaner.clean(html)
 
@@ -216,9 +212,7 @@ def test_custom_allowed_attributes():
     </div>
     """
 
-    cleaner = DOMCleaner(
-        allowed_attributes={"class"}
-    )
+    cleaner = DOMCleaner(allowed_attributes={"class"})
 
     result = cleaner.clean(html)
 
@@ -253,9 +247,7 @@ def test_comments_can_be_preserved():
     </div>
     """
 
-    cleaner = DOMCleaner(
-        remove_comments=False
-    )
+    cleaner = DOMCleaner(remove_comments=False)
 
     result = cleaner.clean(html)
 
@@ -288,9 +280,7 @@ def test_data_urls_can_be_preserved():
     <a href="data:text/plain,ABC123">Text</a>
     """
 
-    cleaner = DOMCleaner(
-        drop_data_urls=False
-    )
+    cleaner = DOMCleaner(drop_data_urls=False)
 
     result = cleaner.clean(html)
 
@@ -305,9 +295,7 @@ def test_long_attributes_are_removed():
     </a>
     """
 
-    cleaner = DOMCleaner(
-        max_attribute_length=10
-    )
+    cleaner = DOMCleaner(max_attribute_length=10)
 
     result = cleaner.clean(html)
 
@@ -320,9 +308,7 @@ def test_attribute_length_limit_can_be_disabled():
 
     html = f'<a href="{long_url}">Link</a>'
 
-    cleaner = DOMCleaner(
-        max_attribute_length=None
-    )
+    cleaner = DOMCleaner(max_attribute_length=None)
 
     result = cleaner.clean(html)
 

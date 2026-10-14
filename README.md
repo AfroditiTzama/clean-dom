@@ -16,8 +16,89 @@ The amount of output reduction depends on each page and its content.
 
 ```bash
 pip install clean-dom
+```
 
-Basic Usage
+## Token Metrics
+
+Character metrics are available without optional dependencies. Install the
+`tokens` extra to count tokens with the `cl100k_base` encoding:
+
+```bash
+pip install "clean-dom[tokens]"
+```
+
+```python
+result = cleaner.clean_with_report(html, tokenizer="tiktoken")
+
+print(result.stats.input_tokens)
+print(result.stats.output_tokens)
+```
+
+Token counts depend on the selected encoding and input content.
+
+## Token Budget Mode
+
+Budget mode progressively removes lower-priority DOM noise, rather than
+blindly truncating raw HTML. A requested budget is not guaranteed to be met.
+
+```python
+result = cleaner.clean_to_budget(
+    html,
+    max_tokens=8000,
+    tokenizer="tiktoken",
+)
+
+print(result.stats.budget_met)
+print(result.stats.output_tokens)
+print(result.stats.strategy_level)
+```
+
+## Element Mapping for AI Agents
+
+Use `clean_with_mapping()` to add stable integer `data-cdom-id` values to
+actionable and semantic elements. The IDs let an agent refer to those elements
+without replacing native HTML `id` attributes.
+
+```python
+result = cleaner.clean_with_mapping(html)
+
+print(result.cleaned_html)
+print(result.element_map[1])
+```
+
+For example, the cleaned markup may include:
+
+```html
+<a href="/pricing" data-cdom-id="1">Pricing</a>
+<button data-cdom-id="2">Start free trial</button>
+```
+
+Mapping keys are integers and follow the final cleaned DOM traversal order.
+
+## Repeated Section Deduplication
+
+Deduplication is conservative and disabled by default. When enabled, clean-dom
+only compares sibling subtrees under the same parent. Different normalized
+text or cleaned attributes (including link destinations and form actions)
+prevent a match. A candidate needs at least 24 visible text characters, or a
+larger subtree with at least four tags and 120 serialized characters. This is
+structural matching, not perfect duplicate detection.
+
+```python
+cleaner = DOMCleaner(deduplicate_repeated_sections=True)
+cleaned = cleaner.clean(html)
+```
+
+Report-based APIs include `duplicate_sections_removed` and
+`duplicate_chars_removed` in `result.stats`.
+
+## Benchmarks
+
+The benchmark suite uses committed synthetic-realistic fixtures and a local
+runner. See [BENCHMARKS.md](BENCHMARKS.md) for fixture scope, integrity checks,
+and commands. Results are specific to these fixtures and the local machine.
+
+## Basic Usage
 from clean_dom import DOMCleanerraw_html = """<html>  <head>    <style>body { background: red; }</style>    <script src="analytics.js"></script>  </head>  <body>    <div        id="main-container"        class="content"        data-tracker="xyz123"    >      <h1 class="title">Hello LLM!</h1>      <a href="https://example.com" onclick="trackClick()">        Read More      </a>    </div>  </body></html>"""cleaner = DOMCleaner()cleaned_html = cleaner.clean(raw_html)print(cleaned_html)
 
 
@@ -96,6 +177,10 @@ The agent preset keeps useful form and accessibility information such as:
 - name
 - type
 - placeholder
+
+The agent preset also preserves `nav` and `footer` containers so agents can use category,
+breadcrumb, pagination, and footer links. The default cleaner continues to
+remove `nav` and `footer` by default.
 This helps downstream AI systems understand interactive page elements such as
 buttons, links, and form fields.
 Presets

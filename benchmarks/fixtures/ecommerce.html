@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Workshop supplies | Sample Market</title>
+  <style>.product-card{display:grid;gap:1rem}.visually-hidden{position:absolute;clip:rect(0,0,0,0)}</style>
+  <script>window.catalogReady = true;</script>
+</head>
+<body>
+  <header class="store-header"><a href="/" class="logo">Sample Market</a><form action="/search" method="get" role="search"><label for="q">Search supplies</label><input id="q" name="q" type="search" placeholder="Search products"><button type="submit">Search</button></form><a href="/basket" aria-label="Shopping basket">Basket</a></header>
+  <nav aria-label="Product categories"><a href="/tools">Tools</a><a href="/materials">Materials</a><a href="/safety">Safety</a></nav>
+  <main><nav aria-label="Breadcrumb"><a href="/">Home</a> / Workshop supplies</nav><h1>Workshop supplies</h1>
+    <form action="/workshop-supplies" method="get" class="filters filter-panel desktop-filter-panel">
+      <label for="sort">Sort by</label><select id="sort" name="sort"><option value="relevance">Relevance</option><option value="price">Price</option></select>
+      <label><input type="checkbox" name="in_stock" value="yes"> Available now</label><button type="submit">Apply filters</button>
+    </form>
+    <section class="product-grid" aria-label="Products">
+      <article class="product-card product-card--standard product-card__item grid-col-4 js-product" data-track="catalog-card" data-sku="tool-101">
+        <a class="product-card__image" href="/products/hand-plane-101"><img src="/images/hand-plane.jpg" alt="Compact hand plane with adjustable blade"></a>
+        <h2><a href="/products/hand-plane-101">Compact hand plane</a></h2><p>A small adjustable plane for careful edge work.</p><p class="price">$34.50</p>
+        <form action="/basket/add/tool-101" method="post"><input type="hidden" name="sku" value="tool-101"><label for="qty-101">Quantity</label><input id="qty-101" name="quantity" type="number" value="1"><button type="submit">Add compact plane</button></form>
+      </article>
+      <article class="product-card product-card--featured product-card__item grid-col-4 js-product" data-track="catalog-card" data-sku="tool-202">
+        <a class="product-card__image" href="/products/bench-square-202"><img src="/images/bench-square.jpg" alt="Steel bench square with etched measurement marks"></a>
+        <h2><a href="/products/bench-square-202">Steel bench square</a></h2><p>Etched marks make alignment checks easy to read.</p><p class="price">$21.00</p>
+        <form action="/basket/add/tool-202" method="post"><input type="hidden" name="sku" value="tool-202"><label for="qty-202">Quantity</label><input id="qty-202" name="quantity" type="number" value="1"><button type="submit">Add steel square</button></form>
+      </article>
+      <article class="product-card product-card--bundle product-card__item grid-col-4 js-product" data-track="catalog-card" data-sku="tool-303">
+        <a class="product-card__image" href="/products/marking-set-303"><img src="/images/marking-set.jpg" alt="Marking set with pencil, awl, and spare leads"></a>
+        <h2><a href="/products/marking-set-303">Workshop marking set</a></h2><p>A pencil, awl, and spare leads in a reusable case.</p><p class="price">$18.75</p>
+        <form action="/basket/add/tool-303" method="post"><input type="hidden" name="sku" value="tool-303"><label for="qty-303">Quantity</label><input id="qty-303" name="quantity" type="number" value="1"><button type="submit">Add marking set</button></form>
+      </article>
+      <article class="product-card product-card--standard grid-col-4 js-product" data-track="catalog-card" data-sku="tool-404">
+        <a href="/products/clamp-pair-404"><img src="/images/clamp-pair.jpg" alt="Pair of small padded clamps"></a>
+        <h2><a href="/products/clamp-pair-404">Padded clamp pair</a></h2><p>Two light clamps for holding small assemblies.</p><p class="price">$15.20</p>
+        <form action="/basket/add/tool-404" method="post"><input name="sku" type="hidden" value="tool-404"><button type="submit">Add clamp pair</button></form>
+      </article>
+    </section>
+    <nav aria-label="Pagination"><a href="?page=1">1</a><a href="?page=2">2</a><a href="?page=2" rel="next">Next</a></nav>
+  </main>
+  <footer><a href="/delivery">Delivery</a><a href="/returns">Returns</a><span>Prices and stock are examples for this synthetic fixture.</span></footer>
+</body>
+</html>

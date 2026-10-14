@@ -20,5 +20,6 @@ def main():
     print("=== Cleaned HTML ===")
     print(cleaner.clean(raw_html))
 
+
 if __name__ == "__main__":
     main()
