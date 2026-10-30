@@ -466,6 +466,22 @@ See [BENCHMARKS.md](BENCHMARKS.md) for methodology and limitations.
 
 ---
 
+### See clean-dom in Action
+
+A demonstration of HTML cleaning using the default configuration.
+
+![Before and After](docs/assets/before-after-demo.png)
+
+**Results:**
+- Original HTML: 459 characters
+- Cleaned DOM: 201 characters
+- **56.2% character reduction**
+
+The cleaner removes unnecessary HTML elements and tracking attributes while preserving useful content and semantic structure.
+
+*Results are based on this illustrative example.*
+
+
 ## Why clean-dom?
 
 Raw browser HTML often contains large amounts of information that does not help an LLM reason about a page:
